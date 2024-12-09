@@ -2,7 +2,7 @@ from manim import *
 
 config.pixel_width = 1080
 config.pixel_height = 1920
-config.frame_height = 16.0  # Aspect ratio height
+config.frame_height = 16.0
 config.frame_width = 9.0    
 
 class SolveQuadraticEquation(Scene):
