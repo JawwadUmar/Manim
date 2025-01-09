@@ -78,6 +78,7 @@ class HighlightLHSHRS(MovingCameraScene):
         )
 
         group = VGroup(quadratic_equation_label, rectangle2, linear_equation_label, rectangle1)
+        group.z_index = 1
         self.play(
             group.animate.to_edge(UP + LEFT, buff=1),
             run_time=2
@@ -104,12 +105,13 @@ class HighlightLHSHRS(MovingCameraScene):
         self.play(Write(linear, run_time = 3))
 
         point1 = Dot(axes.c2p(2, 7), color=YELLOW)
-        point1_label = MathTex("(2,7)")
+
+        point1_label = MathTex("(","2" ,",", "7",")")
         point1_label.next_to(point1, RIGHT)
 
 
         point2 = Dot(axes.c2p(3, 9), color=YELLOW)
-        point2_label = MathTex("(3,9)")
+        point2_label = MathTex("(","3" ,",", "9",")")
         point2_label.next_to(point2, RIGHT)
 
         point_group = VGroup(point1, point2, point1_label, point2_label)
@@ -128,5 +130,23 @@ class HighlightLHSHRS(MovingCameraScene):
             self.camera.frame.animate.set(width = point_group.width*2).move_to(point_group),
         )
 
+        self.play(
+            point1_label[1].animate.set_color(YELLOW),
+            point2_label[1].animate.set_color(YELLOW)
+        )
+
+        # self.play(Restore(self.camera.frame))
+
+        lastStep = MathTex("x = 2", "\\,\\,\\text{or}\\,\\,", "x = 3")
+        lastStep[0].set_color(YELLOW)
+        lastStep[2].set_color(YELLOW)
+        lastStep.next_to(point_group, DOWN*2)
+        lastStep.scale(0.75)
+        lastbox = SurroundingRectangle(lastStep, color=WHITE)
+        
+        self.play(
+            Write(lastStep)
+        )
+        self.play(Create(lastbox))
 
         self.wait(3)

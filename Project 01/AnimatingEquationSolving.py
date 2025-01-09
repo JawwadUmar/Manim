@@ -14,6 +14,9 @@ class SolveQuadraticEquation(Scene):
         
 
         title = Title("Solving an Equation")
+        title.scale(1.5)
+        title.to_edge(UP)
+
         self.add(title)
 
         # Step 1: Create each line of math steps
@@ -34,6 +37,8 @@ class SolveQuadraticEquation(Scene):
             step5
         ).arrange(DOWN, center=True, aligned_edge=LEFT, buff=0.8)
 
+        steps_group.scale(1.5)
+
         # Step 3: Play the animations for each step
         for step in steps_group:
             self.play(Write(step))
@@ -44,6 +49,4 @@ class SolveQuadraticEquation(Scene):
         self.play(Create(box))
         self.wait(1)
 
-        # Fade out at the end
-        self.play(FadeOut(box))
         self.wait(1)
