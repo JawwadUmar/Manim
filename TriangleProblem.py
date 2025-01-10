@@ -21,8 +21,10 @@ class DrawTriangle(MovingCameraScene):
         self.add(problemDescripton)
         self.wait(2)
 
+        highlighted_part1 = problemDescripton[21:27]
+        highlighted_part2 = problemDescripton[49:62]
+        highlighted_part3 = problemDescripton[66:71]
         
-
         self.play(
             problemDescripton.animate.move_to(UP*3),
             FadeOut(title)
@@ -85,9 +87,11 @@ class DrawTriangle(MovingCameraScene):
         label_E = MathTex("E").next_to(E, RIGHT)
         pointD = Dot(point=D, color=YELLOW)
         pointE = Dot(point=E, color=YELLOW)
-        AD_bisector = Line(A, D, color=YELLOW)
+        AD_bisector = Line(A, D)
         AB_Side = Line(A, B, color=RED)
         CD_Side = Line(C, D, color=RED)
+        BC_side = Line(B, C)
+        AE_side = Line(A, E)
 
         angleA = Angle.from_three_points(C, A, B, other_angle=True)
         angleB = Angle.from_three_points(A, B, C, other_angle=True)
@@ -100,8 +104,9 @@ class DrawTriangle(MovingCameraScene):
 
         BE_bisector = Line(B, E, color=GREEN)
         EC_side = Line(E, C, color = GREEN)
+        DE_side = Line(D, E, color=BLUE)
 
-        groupTriangleAndLabels = VGroup(triangle, label_A, label_B, label_C, label_D, pointD, angleA, angleB, angleC, AD_bisector, AB_Side, CD_Side, angle_BAD, angle_DAC, label_E, pointE, BE_bisector, angle_ABE, angle_EBC)
+        groupTriangleAndLabels = VGroup(triangle, label_A, label_B, label_C, label_D, pointD, angleA, angleB, angleC, AD_bisector, AB_Side, CD_Side, angle_BAD, angle_DAC, label_E, pointE, BE_bisector, angle_ABE, angle_EBC, EC_side, BC_side, DE_side, AE_side)
 
         groupTriangleAndLabels.move_to(ORIGIN + DOWN)
 
@@ -118,9 +123,12 @@ class DrawTriangle(MovingCameraScene):
 
         angleABEText = MathTex("x")
         angleEBCText = MathTex("x")
-        angleABEText.next_to(angle_ABE.point_from_proportion(0.5) + 0.3*UP)
+        angleABEText.next_to(angle_ABE.point_from_proportion(0.5) + 0.4*UP)
         angleEBCText.next_to(angle_EBC)
         
+        self.play(
+            highlighted_part1.animate.set_color(YELLOW)
+        )
         self.play(Create(angleC))
         LetangleCbex.next_to(angleC, 1.4*LEFT + 0.2*UP)
         self.play(Write(LetangleCbex))
@@ -133,19 +141,22 @@ class DrawTriangle(MovingCameraScene):
         self.play(Create(pointD))
         self.play(Write(label_D))
 
-        
+        self.play(highlighted_part2.animate.set_color(YELLOW))
         self.play(Create(AD_bisector))
 
         self.play(Create(angle_BAD), Create(angle_DAC))
         self.play(Write(angleDACText), Write(angleBADText))
 
         self.play(
+            highlighted_part3.animate.set_color(RED)
+        )
+
+        self.play(
             Create(AB_Side),
             Create(CD_Side),
         )
         
-
-        
+        self.wait(2)
         
         self.play(Create(BE_bisector))
         self.play(Create(pointE))
@@ -161,6 +172,43 @@ class DrawTriangle(MovingCameraScene):
             Write(angleEBCText)
         )
 
-        groupOppositeAnglesAndSide_EBC = VGroup(angle_EBC, angleEBCText, )
 
+        groupTriangleBEC = VGroup(angle_EBC, angleEBCText, EC_side,angleC, BE_bisector, BC_side, LetangleCbex)
+        groupTriangleBEC.save_state()
+        self.play(
+            groupTriangleBEC.animate.set_color(YELLOW)
+        )
+        self.play(
+            Restore(groupTriangleBEC)
+        )
+
+        self.add(CD_Side)
+        self.play(Create(DE_side))
+
+        groupTriangleCED = VGroup(EC_side, CD_Side, DE_side)
+        groupTriangleABE = VGroup(AB_Side, BE_bisector, AE_side)
+        
+        groupTriangleCED.save_state()
+        groupTriangleABE.save_state()
+
+        self.play(
+            groupTriangleCED.animate.set_color(YELLOW)
+        )
+
+        self.wait(2)
+
+        self.play(
+            groupTriangleABE.animate.set_color(YELLOW)
+        )
+
+        self.play(
+            Restore(groupTriangleCED),
+            Restore(groupTriangleABE)
+        )
+
+        self.play(
+            AE_side.animate.set_color(BLUE)
+        )
+
+    
         self.wait(5)
